@@ -229,8 +229,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -267,15 +265,19 @@
 							<array>
 								<string>08FB7794FE84155DC02AAC07</string>
 								<string>08FB7795FE84155DC02AAC07</string>
+								<string>BCDE45AB114FD9AA00E8F1B9</string>
+								<string>BCDE46B1114FDCF200E8F1B9</string>
+								<string>BCA46E39115246F300F2A99F</string>
+								<string>BCA46E6D1152912700F2A99F</string>
 								<string>1C37FBAC04509CD000000102</string>
-								<string>BCDE489C11522E7300E8F1B9</string>
 								<string>1C37FABC05509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>7</integer>
-									<integer>6</integer>
+									<integer>3</integer>
+									<integer>1</integer>
+									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
@@ -298,7 +300,7 @@
 							<real>255</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>-2 95 1181 683 0 0 1280 778 </string>
+						<string>0 95 1181 683 0 0 1280 778 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -309,6 +311,8 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -326,7 +330,7 @@
 										<key>_historyCapacity</key>
 										<integer>20</integer>
 										<key>bookmark</key>
-										<string>BCDE48A01152307000E8F1B9</string>
+										<string>BCA46EA2115299A600F2A99F</string>
 										<key>history</key>
 										<array>
 											<string>BCDE44EC114FD21D00E8F1B9</string>
@@ -335,10 +339,12 @@
 											<string>BCDE479F1150218C00E8F1B9</string>
 											<string>BCDE47B41150240200E8F1B9</string>
 											<string>BCDE47CA1150279400E8F1B9</string>
-											<string>BCDE48801151575800E8F1B9</string>
 											<string>BCDE48871151927500E8F1B9</string>
-											<string>BCDE489D11522E7300E8F1B9</string>
-											<string>BCDE489E11522E7300E8F1B9</string>
+											<string>BCA46E421152900700F2A99F</string>
+											<string>BCA46E74115294B600F2A99F</string>
+											<string>BCA46E76115294B600F2A99F</string>
+											<string>BCA46E871152966E00F2A99F</string>
+											<string>BCA46EA1115299A600F2A99F</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -352,7 +358,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {904, 637}}</string>
 								<key>RubberWindowFrame</key>
-								<string>-2 95 1181 683 0 0 1280 778 </string>
+								<string>0 95 1181 683 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -372,7 +378,7 @@
 								<key>Frame</key>
 								<string>{{0, 642}, {904, 0}}</string>
 								<key>RubberWindowFrame</key>
-								<string>-2 95 1181 683 0 0 1280 778 </string>
+								<string>0 95 1181 683 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
@@ -396,9 +402,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>BCDE477B11500F5800E8F1B9</string>
+				<string>BCA46E3F1152470A00F2A99F</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>BCDE477C11500F5800E8F1B9</string>
+				<string>BCA46E401152470A00F2A99F</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -536,12 +542,11 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>1CD10A99069EF8BA00B06720</string>
 		<string>BCDE4482114F9BE600E8F1B9</string>
-		<string>/Users/vinzenzweber/Documents/eclipseworkspace/CubeConfigTool/usb_macosx/USBEventHandler/USBEventHandler.xcodeproj</string>
+		<string>/Users/vinzenzweber/Documents/eclipseworkspace/CubeConfigTool/USBEventHandler/mac/USBEventHandler/USBEventHandler.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>-2 95 1181 683 0 0 1280 778 </string>
+	<string>0 95 1181 683 0 0 1280 778 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -620,7 +625,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>BCDE4482114F9BE600E8F1B9</string>
-				<string>BCDE47111150005D00E8F1B9</string>
+				<string>BCA46E411152470A00F2A99F</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
