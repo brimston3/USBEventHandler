@@ -1,0 +1,281 @@
+// !$*UTF8*$!
+{
+	08FB7793FE84155DC02AAC07 /* Project object */ = {
+		activeArchitecturePreference = x86_64;
+		activeBuildConfigurationName = Release;
+		activeSDKPreference = macosx10.5;
+		activeTarget = D2AAC0620554660B00DB518D /* USBEventHandler */;
+		addToTargets = (
+			D2AAC0620554660B00DB518D /* USBEventHandler */,
+		);
+		breakpoints = (
+		);
+		codeSenseManager = BCDE4485114F9BE600E8F1B9 /* Code sense */;
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					665,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					625,
+					60,
+					20,
+					48,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 290599165;
+			PBXWorkspaceStateSaveDate = 290599165;
+		};
+		perUserProjectItems = {
+			BCDE44EC114FD21D00E8F1B9 = BCDE44EC114FD21D00E8F1B9 /* PBXTextBookmark */;
+			BCDE46BD114FDD0300E8F1B9 = BCDE46BD114FDD0300E8F1B9 /* PBXTextBookmark */;
+			BCDE477311500F5800E8F1B9 = BCDE477311500F5800E8F1B9 /* PBXTextBookmark */;
+			BCDE479F1150218C00E8F1B9 = BCDE479F1150218C00E8F1B9 /* PBXTextBookmark */;
+			BCDE47B41150240200E8F1B9 = BCDE47B41150240200E8F1B9 /* PBXTextBookmark */;
+			BCDE47CA1150279400E8F1B9 = BCDE47CA1150279400E8F1B9 /* PBXTextBookmark */;
+			BCDE48801151575800E8F1B9 = BCDE48801151575800E8F1B9 /* PBXTextBookmark */;
+			BCDE48871151927500E8F1B9 = BCDE48871151927500E8F1B9 /* PBXTextBookmark */;
+			BCDE489D11522E7300E8F1B9 = BCDE489D11522E7300E8F1B9 /* PBXTextBookmark */;
+			BCDE489E11522E7300E8F1B9 = BCDE489E11522E7300E8F1B9 /* PBXTextBookmark */;
+			BCDE48A01152307000E8F1B9 = BCDE48A01152307000E8F1B9 /* PBXTextBookmark */;
+		};
+		sourceControlManager = BCDE4484114F9BE600E8F1B9 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	BCDE4484114F9BE600E8F1B9 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	BCDE4485114F9BE600E8F1B9 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	BCDE448F114F9FA900E8F1B9 /* com_sue_usb_USBEventHandler.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {843, 580}}";
+			sepNavSelRange = "{454, 0}";
+			sepNavVisRange = "{0, 490}";
+		};
+	};
+	BCDE4490114F9FA900E8F1B9 /* USBPrivateDataSample.c */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {843, 6227}}";
+			sepNavSelRange = "{10707, 13}";
+			sepNavVisRange = "{9865, 2026}";
+		};
+	};
+	BCDE44EC114FD21D00E8F1B9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCDE44ED114FD21D00E8F1B9 /* jni.h */;
+		name = "jni.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1051;
+		vrLoc = 0;
+	};
+	BCDE44ED114FD21D00E8F1B9 /* jni.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = jni.h;
+		path = /Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/JavaVM.framework/Headers/jni.h;
+		sourceTree = "<absolute>";
+	};
+	BCDE46BD114FDD0300E8F1B9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCDE46BE114FDD0300E8F1B9 /* MacTypes.h */;
+		name = "MacTypes.h: 94";
+		rLen = 48;
+		rLoc = 2573;
+		rType = 0;
+		vrLen = 1036;
+		vrLoc = 1987;
+	};
+	BCDE46BE114FDD0300E8F1B9 /* MacTypes.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = MacTypes.h;
+		path = /Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CarbonCore.framework/Versions/A/Headers/MacTypes.h;
+		sourceTree = "<absolute>";
+	};
+	BCDE477311500F5800E8F1B9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCDE477411500F5800E8F1B9 /* CFBase.h */;
+		name = "CFBase.h: 200";
+		rLen = 10;
+		rLoc = 6496;
+		rType = 0;
+		vrLen = 1508;
+		vrLoc = 5737;
+	};
+	BCDE477411500F5800E8F1B9 /* CFBase.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = CFBase.h;
+		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/CoreFoundation.framework/Versions/A/Headers/CFBase.h;
+		sourceTree = "<absolute>";
+	};
+	BCDE477611500F5800E8F1B9 /* CFString.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = CFString.h;
+		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/CoreFoundation.framework/Versions/A/Headers/CFString.h;
+		sourceTree = "<absolute>";
+	};
+	BCDE477811500F5800E8F1B9 /* IOUSBLib.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = IOUSBLib.h;
+		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/IOKit.framework/Headers/usb/IOUSBLib.h;
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1349, 37687}}";
+			sepNavSelRange = "{27152, 17}";
+			sepNavVisRange = "{26927, 2387}";
+		};
+	};
+	BCDE479F1150218C00E8F1B9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCDE477611500F5800E8F1B9 /* CFString.h */;
+		name = "CFString.h: 809";
+		rLen = 28;
+		rLoc = 43248;
+		rType = 0;
+		vrLen = 2112;
+		vrLoc = 41175;
+	};
+	BCDE47B41150240200E8F1B9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCDE47B51150240200E8F1B9 /* CFRunLoop.h */;
+		name = "CFRunLoop.h: 62";
+		rLen = 35;
+		rLoc = 1714;
+		rType = 0;
+		vrLen = 2192;
+		vrLoc = 933;
+	};
+	BCDE47B51150240200E8F1B9 /* CFRunLoop.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = CFRunLoop.h;
+		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/CoreFoundation.framework/Versions/A/Headers/CFRunLoop.h;
+		sourceTree = "<absolute>";
+	};
+	BCDE47B71150240200E8F1B9 /* jni.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = jni.h;
+		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers/jni.h;
+		sourceTree = "<absolute>";
+	};
+	BCDE47CA1150279400E8F1B9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCDE47B71150240200E8F1B9 /* jni.h */;
+		name = "jni.h: 80";
+		rLen = 0;
+		rLoc = 2035;
+		rType = 0;
+		vrLen = 930;
+		vrLoc = 1886;
+	};
+	BCDE48801151575800E8F1B9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCDE477811500F5800E8F1B9 /* IOUSBLib.h */;
+		name = "IOUSBLib.h: 623";
+		rLen = 0;
+		rLoc = 26808;
+		rType = 0;
+		vrLen = 1966;
+		vrLoc = 25227;
+	};
+	BCDE48871151927500E8F1B9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCDE48881151927500E8F1B9 /* jni_md.h */;
+		name = "jni_md.h: 11";
+		rLen = 0;
+		rLoc = 282;
+		rType = 0;
+		vrLen = 468;
+		vrLoc = 0;
+	};
+	BCDE48881151927500E8F1B9 /* jni_md.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = jni_md.h;
+		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Headers/jni_md.h;
+		sourceTree = "<absolute>";
+	};
+	BCDE489D11522E7300E8F1B9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCDE448F114F9FA900E8F1B9 /* com_sue_usb_USBEventHandler.h */;
+		name = "com_sue_usb_USBEventHandler.h: 17";
+		rLen = 0;
+		rLoc = 454;
+		rType = 0;
+		vrLen = 490;
+		vrLoc = 0;
+	};
+	BCDE489E11522E7300E8F1B9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCDE4490114F9FA900E8F1B9 /* USBPrivateDataSample.c */;
+		name = "USBPrivateDataSample.c: 344";
+		rLen = 0;
+		rLoc = 12821;
+		rType = 0;
+		vrLen = 1460;
+		vrLoc = 12359;
+	};
+	BCDE48A01152307000E8F1B9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCDE4490114F9FA900E8F1B9 /* USBPrivateDataSample.c */;
+		name = "USBPrivateDataSample.c: 344";
+		rLen = 0;
+		rLoc = 12821;
+		rType = 0;
+		vrLen = 1460;
+		vrLoc = 12359;
+	};
+	D2AAC0620554660B00DB518D /* USBEventHandler */ = {
+		activeExec = 0;
+	};
+}
