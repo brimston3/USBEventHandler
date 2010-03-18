@@ -1,0 +1,3 @@
+I am working on a Java application for Mac/Win which is interfacing a USB CDC device. Basically the USB CDC device opens a virtual serial port (e.g. COM5 on Win - /dev/tty.usbmodem123 on Mac) which my application then uses to communicate with the device. Therefore I need to get hotplug events including the virtual serial port name so my application opens the right port for communication.
+
+I couldn't find any proper code for this scenario so I open-sourced it as a starting point for others! This project only contains the native code and as much Java code as is necessary to explain how it all works. Rest of the Java code is proprietary.
