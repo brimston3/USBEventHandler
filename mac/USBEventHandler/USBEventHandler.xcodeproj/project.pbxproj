@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BCDE4491114F9FA900E8F1B9 /* com_sue_usb_USBEventHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = BCDE448F114F9FA900E8F1B9 /* com_sue_usb_USBEventHandler.h */; };
+		BCA46EAB1152B43500F2A99F /* com_sue_protocol_SerialPortObserverThread.h in Headers */ = {isa = PBXBuildFile; fileRef = BCA46EAA1152B43500F2A99F /* com_sue_protocol_SerialPortObserverThread.h */; };
 		BCDE4492114F9FA900E8F1B9 /* USBPrivateDataSample.c in Sources */ = {isa = PBXBuildFile; fileRef = BCDE4490114F9FA900E8F1B9 /* USBPrivateDataSample.c */; };
 		BCDE465B114FDA8C00E8F1B9 /* JavaVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCDE465A114FDA8C00E8F1B9 /* JavaVM.framework */; };
 		BCDE469F114FDCC200E8F1B9 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCDE469E114FDCC200E8F1B9 /* CoreFoundation.framework */; };
@@ -15,7 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		BCDE448F114F9FA900E8F1B9 /* com_sue_usb_USBEventHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = com_sue_usb_USBEventHandler.h; sourceTree = "<group>"; };
+		BCA46EAA1152B43500F2A99F /* com_sue_protocol_SerialPortObserverThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = com_sue_protocol_SerialPortObserverThread.h; sourceTree = "<group>"; };
 		BCDE4490114F9FA900E8F1B9 /* USBPrivateDataSample.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = USBPrivateDataSample.c; sourceTree = "<group>"; };
 		BCDE465A114FDA8C00E8F1B9 /* JavaVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaVM.framework; path = System/Library/Frameworks/JavaVM.framework; sourceTree = SDKROOT; };
 		BCDE469E114FDCC200E8F1B9 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
@@ -50,7 +50,7 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				BCDE448F114F9FA900E8F1B9 /* com_sue_usb_USBEventHandler.h */,
+				BCA46EAA1152B43500F2A99F /* com_sue_protocol_SerialPortObserverThread.h */,
 				BCDE4490114F9FA900E8F1B9 /* USBPrivateDataSample.c */,
 			);
 			name = Source;
@@ -81,7 +81,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BCDE4491114F9FA900E8F1B9 /* com_sue_usb_USBEventHandler.h in Headers */,
+				BCA46EAB1152B43500F2A99F /* com_sue_protocol_SerialPortObserverThread.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

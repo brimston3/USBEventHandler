@@ -4,20 +4,15 @@
 #include <IOKit/IOMessage.h>
 #include <IOKit/IOCFPlugIn.h>
 #include <IOKit/usb/IOUSBLib.h>
+#include <IOKit/serial/IOSerialKeys.h>
 #import "com_sue_usb_USBEventHandler.h"
 
-
-// Change these two constants to match your device's idVendor and idProduct.
-#define kMyVendorID			0x1F2E
-#define kMyProductID		0x000A
 
 
 typedef struct MyPrivateData {
     io_object_t				notification;
     IOUSBDeviceInterface	**deviceInterface;
-    CFStringRef				deviceName;
-	CFStringRef				serialPort;
-//    UInt32					locationID;
+	CFStringRef				bsdPath;
 } MyPrivateData;
 
 static IONotificationPortRef	gNotifyPort;
@@ -150,24 +145,16 @@ void DeviceNotification(void *refCon, io_service_t service, natural_t messageTyp
     MyPrivateData	*privateDataRef = (MyPrivateData *) refCon;
     
     if (messageType == kIOMessageServiceIsTerminated) {
-        //fprintf(stderr, "Device removed.\n");
-		
-        // Dump our private data to stderr just to see what it looks like.
-        //fprintf(stderr, "privateDataRef->deviceName: ");
-		//CFShow(privateDataRef->deviceName);
-		//fprintf(stderr, "privateDataRef->locationID: 0x%lx.\n\n", privateDataRef->locationID);
-		
-		
-		// inform the Java USBEventHandler
+
 		if (mid_deviceRemoved != NULL && obj_USBEventHandler != NULL) {
 			JNIEnv *env = JNI_GetEnv();
 			
-			CFIndex strLen = CFStringGetLength(privateDataRef->deviceName);
+			CFIndex strLen = CFStringGetLength(privateDataRef->bsdPath);
 			UniChar uniStr[strLen];
 			CFRange strRange;
 			strRange.location = 0;
 			strRange.length = strLen;
-			CFStringGetCharacters(privateDataRef->deviceName, strRange, uniStr);
+			CFStringGetCharacters(privateDataRef->bsdPath, strRange, uniStr);
 			jstring jDeviceName = (*env)->NewString(env, (jchar *)uniStr, (jsize)strLen);
 			//fprintf(stderr, "DeviceNotification attempts to call Java method!");
 			(*env)->CallVoidMethod(env, obj_USBEventHandler, mid_deviceRemoved, jDeviceName);
@@ -175,9 +162,8 @@ void DeviceNotification(void *refCon, io_service_t service, natural_t messageTyp
 			fprintf(stderr, "DeviceNotification can not call deviceRemoved!");
 		}
 		
-		
         // Free the data we're no longer using now that the device is going away
-        CFRelease(privateDataRef->deviceName);
+        CFRelease(privateDataRef->bsdPath);
         
         if (privateDataRef->deviceInterface) {
             kr = (*privateDataRef->deviceInterface)->Release(privateDataRef->deviceInterface);
@@ -208,131 +194,39 @@ void DeviceAdded(void *refCon, io_iterator_t iterator)
 {
     kern_return_t		kr;
     io_service_t		usbDevice;
-    IOCFPlugInInterface	**plugInInterface = NULL;
-    SInt32				score;
-    HRESULT 			res;
     
     while ((usbDevice = IOIteratorNext(iterator))) {
-        io_name_t		deviceName;
-        CFStringRef		deviceNameAsCFString;	
         MyPrivateData	*privateDataRef = NULL;
-        //UInt32			locationID;
-		//UInt8			snsi;
+		CFTypeRef		bsdPathAsCFString;
 		
-        
-        //printf("Device added.\n");
-		
-		
-        // Add some app-specific information about this device.
-        // Create a buffer to hold the data.
+
         privateDataRef = malloc(sizeof(MyPrivateData));
         bzero(privateDataRef, sizeof(MyPrivateData));
-        
-		
-        // Get the USB device's name.
-        kr = IORegistryEntryGetName(usbDevice, deviceName);
-		if (KERN_SUCCESS != kr) {
-            deviceName[0] = '\0';
-        }
-        
-        deviceNameAsCFString = CFStringCreateWithCString(kCFAllocatorDefault, deviceName, kCFStringEncodingASCII);
-		
-        // Dump our data to stderr just to see what it looks like.
-        //fprintf(stderr, "deviceName: ");
-        //CFShow(deviceNameAsCFString);
-        
-        // Save the device's name to our private data.        
-        privateDataRef->deviceName = deviceNameAsCFString;
-		
-        // Now, get the locationID of this device. In order to do this, we need to create an IOUSBDeviceInterface 
-        // for our device. This will create the necessary connections between our userland application and the 
-        // kernel object for the USB Device.
-        kr = IOCreatePlugInInterfaceForService(usbDevice, kIOUSBDeviceUserClientTypeID, kIOCFPlugInInterfaceID,
-                                               &plugInInterface, &score);
-		
-        if ((kIOReturnSuccess != kr) || !plugInInterface) {
-            fprintf(stderr, "IOCreatePlugInInterfaceForService returned 0x%08x.\n", kr);
-            continue;
-        }
-		
-        // Use the plugin interface to retrieve the device interface.
-        res = (*plugInInterface)->QueryInterface(plugInInterface, CFUUIDGetUUIDBytes(kIOUSBDeviceInterfaceID),
-                                                 (LPVOID*) &privateDataRef->deviceInterface);
-        
-        // Now done with the plugin interface.
-        (*plugInInterface)->Release(plugInInterface);
-		
-        if (res || privateDataRef->deviceInterface == NULL) {
-            fprintf(stderr, "QueryInterface returned %d.\n", (int) res);
-            continue;
-        }
+        		
+		// Get the dialin device's path (/dev/tty.usbmodemXXXXX).
+		bsdPathAsCFString = IORegistryEntrySearchCFProperty(usbDevice,
+															kIOServicePlane,
+                                                            CFSTR(kIODialinDeviceKey),
+                                                            kCFAllocatorDefault,
+                                                            kIORegistryIterateRecursively);	
 
+		privateDataRef->bsdPath = bsdPathAsCFString;
 
-        // Now that we have the IOUSBDeviceInterface, we can call the routines in IOUSBLib.h.
-        // In this case, fetch the locationID. The locationID uniquely identifies the device
-        // and will remain the same, even across reboots, so long as the bus topology doesn't change.
-/*        
-        kr = (*privateDataRef->deviceInterface)->GetLocationID(privateDataRef->deviceInterface, &locationID);
-        if (KERN_SUCCESS != kr) {
-            fprintf(stderr, "GetLocationID returned 0x%08x.\n", kr);
-            continue;
-        } else {
-            fprintf(stderr, "Location ID: 0x%lx\n\n", locationID);
-        }
 		
-        privateDataRef->locationID = locationID;
-*/		
-		
-/*************************************************************************************************/
-		
-		// IOReturn (*GetLocationID)(void *self, UInt32 *locationID);
-		// IOReturn (*USBGetSerialNumberStringIndex)(void *self, UInt8 *snsi);
-		
-		CFTypeRef serialNumberRef;
-		serialNumberRef = IORegistryEntryCreateCFProperty(usbDevice, CFSTR("USB Serial Number"), kCFAllocatorDefault, 0);
-		
-		
-		// inform the Java USBEventHandler
-		if (mid_deviceAdded != NULL && obj_USBEventHandler != NULL) {
+		if (bsdPathAsCFString != NULL && mid_deviceAdded != NULL && obj_USBEventHandler != NULL) {
 			JNIEnv *env = JNI_GetEnv();
-			
-/*			
-			CFIndex strLen = CFStringGetLength(serialNumberRef);
+			CFIndex strLen = CFStringGetLength(bsdPathAsCFString);
 			UniChar uniStr[strLen];
 			CFRange strRange;
 			strRange.location = 0;
 			strRange.length = strLen;
-			CFStringGetCharacters(serialNumberRef, strRange, uniStr);
-			jstring jDeviceName = (*env)->NewString(env, (jchar *)uniStr, (jsize)strLen);
-			//fprintf(stderr, "DeviceAdded attempts to call Java method!");
-*/
-			CFMutableArrayRef usbModemPathArray = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
-			CFArrayAppendValue(usbModemPathArray, (const void *) CFSTR("/dev/tty.usbmodem"));
-			CFArrayAppendValue(usbModemPathArray, (const void *) serialNumberRef);
-			
-			CFStringRef usbModemPath = CFStringCreateByCombiningStrings(kCFAllocatorDefault, usbModemPathArray, CFSTR(""));
-			CFIndex strLen = CFStringGetLength(usbModemPath);
-			UniChar uniStr[strLen];
-			CFRange strRange;
-			strRange.location = 0;
-			strRange.length = strLen;
-			CFStringGetCharacters(usbModemPath, strRange, uniStr);
-			
-			CFRelease(usbModemPathArray);
-			CFRelease(usbModemPath);
-			
-			jstring jusbModemPath = (*env)->NewString(env, (jchar *)uniStr, (jsize)strLen);
-			
-			(*env)->CallVoidMethod(env, obj_USBEventHandler, mid_deviceAdded, jusbModemPath);
+			CFStringGetCharacters(bsdPathAsCFString, strRange, uniStr);
+			jstring jBSDPath = (*env)->NewString(env, (jchar *)uniStr, (jsize)strLen);
+			fprintf(stderr, "DeviceAdded attempts to call Java method!");
+			(*env)->CallVoidMethod(env, obj_USBEventHandler, mid_deviceAdded, jBSDPath);
 		} else {
 			fprintf(stderr, "DeviceNotification can not call deviceAdded!");
 		}
-		
-		
-		CFRelease(serialNumberRef);
-
-
-/*************************************************************************************************/
 		
 		
         // Register for an interest notification of this device being removed. Use a reference to our
@@ -375,7 +269,7 @@ void SignalHandler(int sigraised)
 //================================================================================================
 //	main
 //================================================================================================
-JNIEXPORT jint JNICALL Java_com_sue_usb_USBEventHandler_initHandler(JNIEnv *env, jobject obj, jlong usbVendor, jlong usbProduct) {
+JNIEXPORT jint JNICALL Java_com_sue_protocol_SerialPortObserverThread_initHandler(JNIEnv *env, jobject obj, jlong usbVendor, jlong usbProduct) {
 	
 	CFMutableDictionaryRef 	matchingDict;
     CFRunLoopSourceRef		runLoopSource;
@@ -450,7 +344,8 @@ JNIEXPORT jint JNICALL Java_com_sue_usb_USBEventHandler_initHandler(JNIEnv *env,
     // criteria to it and it will match every IOUSBDevice in the system. IOServiceAddMatchingNotification will 
     // consume this dictionary reference, so there is no need to release it later on.
     
-    matchingDict = IOServiceMatching(kIOUSBDeviceClassName);	// Interested in instances of class
+	
+	matchingDict = IOServiceMatching(kIOUSBDeviceClassName);	// Interested in instances of class
 	// IOUSBDevice and its subclasses
     if (matchingDict == NULL) {
         fprintf(stderr, "IOServiceMatching returned NULL.\n");

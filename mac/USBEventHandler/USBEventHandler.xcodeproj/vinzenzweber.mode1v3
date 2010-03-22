@@ -267,8 +267,7 @@
 								<string>08FB7795FE84155DC02AAC07</string>
 								<string>BCDE45AB114FD9AA00E8F1B9</string>
 								<string>BCDE46B1114FDCF200E8F1B9</string>
-								<string>BCA46E39115246F300F2A99F</string>
-								<string>BCA46E6D1152912700F2A99F</string>
+								<string>BCA4730E11555C6200F2A99F</string>
 								<string>1C37FBAC04509CD000000102</string>
 								<string>1C37FABC05509CD000000102</string>
 							</array>
@@ -300,7 +299,7 @@
 							<real>255</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>0 95 1181 683 0 0 1280 778 </string>
+						<string>0 95 1139 683 0 0 1280 778 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -330,7 +329,7 @@
 										<key>_historyCapacity</key>
 										<integer>20</integer>
 										<key>bookmark</key>
-										<string>BCA46EA2115299A600F2A99F</string>
+										<string>BCA473891156664E00F2A99F</string>
 										<key>history</key>
 										<array>
 											<string>BCDE44EC114FD21D00E8F1B9</string>
@@ -340,11 +339,17 @@
 											<string>BCDE47B41150240200E8F1B9</string>
 											<string>BCDE47CA1150279400E8F1B9</string>
 											<string>BCDE48871151927500E8F1B9</string>
-											<string>BCA46E421152900700F2A99F</string>
 											<string>BCA46E74115294B600F2A99F</string>
-											<string>BCA46E76115294B600F2A99F</string>
-											<string>BCA46E871152966E00F2A99F</string>
-											<string>BCA46EA1115299A600F2A99F</string>
+											<string>BCA46EC11152BDEF00F2A99F</string>
+											<string>BCA46EE211536ED400F2A99F</string>
+											<string>BCA47305115531FD00F2A99F</string>
+											<string>BCA47307115531FD00F2A99F</string>
+											<string>BCA4733911555F1300F2A99F</string>
+											<string>BCA4733A11555F1300F2A99F</string>
+											<string>BCA473541155611000F2A99F</string>
+											<string>BCA4735E115562A100F2A99F</string>
+											<string>BCA4735F115562A100F2A99F</string>
+											<string>BCA47360115562A100F2A99F</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -356,9 +361,9 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {904, 637}}</string>
+								<string>{{0, 0}, {862, 637}}</string>
 								<key>RubberWindowFrame</key>
-								<string>0 95 1181 683 0 0 1280 778 </string>
+								<string>0 95 1139 683 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -376,9 +381,9 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 642}, {904, 0}}</string>
+								<string>{{0, 642}, {862, 0}}</string>
 								<key>RubberWindowFrame</key>
-								<string>0 95 1181 683 0 0 1280 778 </string>
+								<string>0 95 1139 683 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
@@ -387,7 +392,7 @@
 						</dict>
 					</array>
 					<key>Proportion</key>
-					<string>904pt</string>
+					<string>862pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -402,9 +407,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>BCA46E3F1152470A00F2A99F</string>
+				<string>BCA472BB1154F60B00F2A99F</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>BCA46E401152470A00F2A99F</string>
+				<string>BCA472BC1154F60B00F2A99F</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -546,7 +551,7 @@
 		<string>/Users/vinzenzweber/Documents/eclipseworkspace/CubeConfigTool/USBEventHandler/mac/USBEventHandler/USBEventHandler.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>0 95 1181 683 0 0 1280 778 </string>
+	<string>0 95 1139 683 0 0 1280 778 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -625,7 +630,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>BCDE4482114F9BE600E8F1B9</string>
-				<string>BCA46E411152470A00F2A99F</string>
+				<string>BCA472BD1154F60B00F2A99F</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
