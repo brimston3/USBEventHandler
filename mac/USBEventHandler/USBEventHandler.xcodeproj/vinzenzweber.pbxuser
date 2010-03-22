@@ -56,10 +56,13 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 290780679;
-			PBXWorkspaceStateSaveDate = 290780679;
+			PBXPerProjectTemplateStateSaveDate = 290945551;
+			PBXWorkspaceStateSaveDate = 290945551;
 		};
 		perUserProjectItems = {
+			BC2A494411577A2300072F75 /* PBXTextBookmark */ = BC2A494411577A2300072F75 /* PBXTextBookmark */;
+			BC2A494511577A2300072F75 /* PBXTextBookmark */ = BC2A494511577A2300072F75 /* PBXTextBookmark */;
+			BC2A494A11577A9200072F75 /* PBXTextBookmark */ = BC2A494A11577A9200072F75 /* PBXTextBookmark */;
 			BCA46E74115294B600F2A99F /* PBXTextBookmark */ = BCA46E74115294B600F2A99F /* PBXTextBookmark */;
 			BCA46EC11152BDEF00F2A99F /* PBXTextBookmark */ = BCA46EC11152BDEF00F2A99F /* PBXTextBookmark */;
 			BCA46EE211536ED400F2A99F /* PBXTextBookmark */ = BCA46EE211536ED400F2A99F /* PBXTextBookmark */;
@@ -67,11 +70,8 @@
 			BCA47307115531FD00F2A99F /* PBXTextBookmark */ = BCA47307115531FD00F2A99F /* PBXTextBookmark */;
 			BCA4733911555F1300F2A99F /* PBXTextBookmark */ = BCA4733911555F1300F2A99F /* PBXTextBookmark */;
 			BCA4733A11555F1300F2A99F /* PBXTextBookmark */ = BCA4733A11555F1300F2A99F /* PBXTextBookmark */;
-			BCA473541155611000F2A99F /* PBXTextBookmark */ = BCA473541155611000F2A99F /* PBXTextBookmark */;
 			BCA4735E115562A100F2A99F /* PBXTextBookmark */ = BCA4735E115562A100F2A99F /* PBXTextBookmark */;
 			BCA4735F115562A100F2A99F /* PBXTextBookmark */ = BCA4735F115562A100F2A99F /* PBXTextBookmark */;
-			BCA47360115562A100F2A99F /* PBXTextBookmark */ = BCA47360115562A100F2A99F /* PBXTextBookmark */;
-			BCA473891156664E00F2A99F /* PBXTextBookmark */ = BCA473891156664E00F2A99F /* PBXTextBookmark */;
 			BCDE44EC114FD21D00E8F1B9 /* PBXTextBookmark */ = BCDE44EC114FD21D00E8F1B9 /* PBXTextBookmark */;
 			BCDE46BD114FDD0300E8F1B9 /* PBXTextBookmark */ = BCDE46BD114FDD0300E8F1B9 /* PBXTextBookmark */;
 			BCDE477311500F5800E8F1B9 /* PBXTextBookmark */ = BCDE477311500F5800E8F1B9 /* PBXTextBookmark */;
@@ -83,6 +83,36 @@
 		sourceControlManager = BCDE4484114F9BE600E8F1B9 /* Source Control */;
 		userBuildSettings = {
 		};
+	};
+	BC2A494411577A2300072F75 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCA473551155611000F2A99F /* IOSerialKeys.h */;
+		name = "IOSerialKeys.h: 64";
+		rLen = 14;
+		rLoc = 2263;
+		rType = 0;
+		vrLen = 1673;
+		vrLoc = 1183;
+	};
+	BC2A494511577A2300072F75 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCDE4490114F9FA900E8F1B9 /* USBPrivateDataSample.c */;
+		name = "USBPrivateDataSample.c: 209";
+		rLen = 18;
+		rLoc = 7232;
+		rType = 0;
+		vrLen = 2041;
+		vrLoc = 6753;
+	};
+	BC2A494A11577A9200072F75 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = BCDE4490114F9FA900E8F1B9 /* USBPrivateDataSample.c */;
+		name = "USBPrivateDataSample.c: 209";
+		rLen = 18;
+		rLoc = 7232;
+		rType = 0;
+		vrLen = 2041;
+		vrLoc = 6753;
 	};
 	BCA46E74115294B600F2A99F /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -107,11 +137,6 @@
 		name = IOKitLib.h;
 		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/IOKit.framework/Versions/A/Headers/IOKitLib.h;
 		sourceTree = "<absolute>";
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {5017, 18031}}";
-			sepNavSelRange = "{50366, 33}";
-			sepNavVisRange = "{48669, 3651}";
-		};
 	};
 	BCA46EAA1152B43500F2A99F /* com_sue_protocol_SerialPortObserverThread.h */ = {
 		uiCtxt = {
@@ -159,6 +184,7 @@
 	};
 	BCA47306115531FD00F2A99F /* USBSpec.h */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
 		name = USBSpec.h;
 		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/IOKit.framework/Versions/A/Headers/usb/USBSpec.h;
 		sourceTree = "<absolute>";
@@ -175,6 +201,7 @@
 	};
 	BCA47308115531FD00F2A99F /* IOTypes.h */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
 		name = IOTypes.h;
 		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/IOKit.framework/Versions/A/Headers/IOTypes.h;
 		sourceTree = "<absolute>";
@@ -201,6 +228,7 @@
 	};
 	BCA4733B11555F1300F2A99F /* IOCFPlugIn.h */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
 		name = IOCFPlugIn.h;
 		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/IOKit.framework/Versions/A/Headers/IOCFPlugIn.h;
 		sourceTree = "<absolute>";
@@ -211,27 +239,18 @@
 		name = IOKitKeys.h;
 		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/IOKit.framework/Headers/IOKitKeys.h;
 		sourceTree = "<absolute>";
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {801, 2210}}";
-			sepNavSelRange = "{1894, 43}";
-			sepNavVisRange = "{1293, 1292}";
-		};
-	};
-	BCA473541155611000F2A99F /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCA473551155611000F2A99F /* IOSerialKeys.h */;
-		name = "IOSerialKeys.h: 64";
-		rLen = 45;
-		rLoc = 2234;
-		rType = 0;
-		vrLen = 1673;
-		vrLoc = 1183;
 	};
 	BCA473551155611000F2A99F /* IOSerialKeys.h */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
 		name = IOSerialKeys.h;
 		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/IOKit.framework/Versions/A/Headers/serial/IOSerialKeys.h;
 		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {915, 1053}}";
+			sepNavSelRange = "{2263, 14}";
+			sepNavVisRange = "{1183, 1673}";
+		};
 	};
 	BCA4735E115562A100F2A99F /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -253,26 +272,6 @@
 		vrLen = 3651;
 		vrLoc = 48669;
 	};
-	BCA47360115562A100F2A99F /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCDE4490114F9FA900E8F1B9 /* USBPrivateDataSample.c */;
-		name = "USBPrivateDataSample.c: 335";
-		rLen = 31;
-		rLoc = 7091;
-		rType = 0;
-		vrLen = 1813;
-		vrLoc = 12318;
-	};
-	BCA473891156664E00F2A99F /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = BCDE4490114F9FA900E8F1B9 /* USBPrivateDataSample.c */;
-		name = "USBPrivateDataSample.c: 15";
-		rLen = 0;
-		rLoc = 377;
-		rType = 0;
-		vrLen = 1256;
-		vrLoc = 0;
-	};
 	BCDE4484114F9BE600E8F1B9 /* Source Control */ = {
 		isa = PBXSourceControlManager;
 		fallbackIsa = XCSourceControlManager;
@@ -289,9 +288,9 @@
 	};
 	BCDE4490114F9FA900E8F1B9 /* USBPrivateDataSample.c */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1020, 5057}}";
-			sepNavSelRange = "{7009, 0}";
-			sepNavVisRange = "{8931, 819}";
+			sepNavIntBoundsRect = "{{0, 0}, {801, 5330}}";
+			sepNavSelRange = "{7232, 18}";
+			sepNavVisRange = "{6753, 2041}";
 		};
 	};
 	BCDE44EC114FD21D00E8F1B9 /* PBXTextBookmark */ = {
@@ -358,11 +357,6 @@
 		name = IOUSBLib.h;
 		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/IOKit.framework/Headers/usb/IOUSBLib.h;
 		sourceTree = "<absolute>";
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1349, 37401}}";
-			sepNavSelRange = "{6438, 71}";
-			sepNavVisRange = "{5147, 2054}";
-		};
 	};
 	BCDE479F1150218C00E8F1B9 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
