@@ -5,7 +5,7 @@
 #include <IOKit/IOCFPlugIn.h>
 #include <IOKit/usb/IOUSBLib.h>
 #include <IOKit/serial/IOSerialKeys.h>
-#import "com_sue_usb_USBEventHandler.h"
+#import "com_sue_protocol_SerialPortObserverThread.h"
 
 
 
@@ -30,7 +30,7 @@ jmethodID mid_deviceAdded = NULL;
 jmethodID mid_test = NULL;
 #endif
 
-
+/*
 //================================================================================================
 //
 //	JNU_GetEnv
@@ -42,7 +42,53 @@ jmethodID mid_test = NULL;
 JNIEnv *JNI_GetEnv()
 {
 	JNIEnv *env;
+	fprintf(stderr, "JNI_GetEnv");
 	(*cached_jvm)->GetEnv(cached_jvm, (void **)&env, JNI_VERSION_1_2);
+	assert(env != NULL);
+	return env;
+}
+*/
+
+
+/*----------------------------------------------------------
+ get_java_environment
+ 
+ accept:      pointer to the virtual machine
+ flag to know if we are attached
+ return:      pointer to the Java Environment
+ exceptions:  none
+ comments:    see JNI_OnLoad.  For getting the JNIEnv in the thread
+ used to monitor for output buffer empty.
+ ----------------------------------------------------------*/
+JNIEnv *JNI_GetEnv(jboolean *was_attached){
+	JNIEnv *env = NULL;
+	jint err;
+	
+	*was_attached = JNI_FALSE;
+	
+	if (cached_jvm == NULL) {
+		fprintf(stderr, "JNI_GetEnv: cached_jvm == NULL\n");
+		return env;
+	}
+	
+	err = (*cached_jvm)->GetEnv(cached_jvm, (void **)&env, JNI_VERSION_1_2);
+	
+	if (err == JNI_ERR) {
+		fprintf(stderr, "JNI_GetEnv: unknown error getting the JNI Env!\n");
+		return env;
+	}
+
+	if (err == JNI_EDETACHED) {
+		err = (*cached_jvm)->AttachCurrentThread(cached_jvm, (void**)&env, NULL);
+	}
+	
+	if (err == JNI_OK) {
+		//fprintf(stderr, "JNI_GetEnv: attached to Thread!\n");
+		*was_attached = JNI_TRUE;
+	} else {
+		fprintf(stderr, "JNI_GetEnv: error %i\n", err);
+	}
+	
 	return env;
 }
 
@@ -60,7 +106,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *jvm, void *reserved)
 	JNIEnv *env;
 	cached_jvm = jvm;  /* cache the JavaVM pointer */
 	
-	fprintf(stderr, "\nUSBEventHandler JNI_OnLoad\n");
+	//fprintf(stderr, "\nUSBEventHandler JNI_OnLoad\n");
 	
 	if ((*jvm)->GetEnv(jvm, (void **)&env, JNI_VERSION_1_2)) {
 		return JNI_ERR; /* JNI version not supported */
@@ -84,7 +130,7 @@ JNIEXPORT void JNICALL JNI_OnUnload(JavaVM *jvm, void *reserved)
 {
 	JNIEnv *env;
 	
-	fprintf(stderr, "\nUSBEventHandler JNI_OnUnload\n");
+	//fprintf(stderr, "\nUSBEventHandler JNI_OnUnload\n");
 	
 	if ((*jvm)->GetEnv(jvm, (void **)&env, JNI_VERSION_1_2)) {
 		return;
@@ -132,23 +178,36 @@ jstring getTestString(JNIEnv *env) {
 
 //================================================================================================
 //
-//	DeviceNotification
+//	DeviceRemoved
 //
 //	This routine will get called whenever any kIOGeneralInterest notification happens.  We are
 //	interested in the kIOMessageServiceIsTerminated message so that's what we look for.  Other
 //	messages are defined in IOMessage.h.
 //
 //================================================================================================
-void DeviceNotification(void *refCon, io_service_t service, natural_t messageType, void *messageArgument)
+void DeviceRemoved(void *refCon, io_service_t service, natural_t messageType, void *messageArgument)
 {
 	kern_return_t	kr;
     MyPrivateData	*privateDataRef = (MyPrivateData *) refCon;
-    
+	jboolean jvm_was_attached;
+	
+	//fprintf(stderr, "DeviceRemoved\n");
+	
+	if (privateDataRef->bsdPath == NULL) {
+		fprintf(stderr, "privateDataRef->bsdPath == NULL\n");	
+		free(privateDataRef);
+		return;
+	}
+	
+	
     if (messageType == kIOMessageServiceIsTerminated) {
-
+		
 		if (mid_deviceRemoved != NULL && obj_USBEventHandler != NULL) {
-			JNIEnv *env = JNI_GetEnv();
-			
+			JNIEnv *env = JNI_GetEnv(&jvm_was_attached);
+			if (jvm_was_attached == JNI_FALSE) {
+				fprintf(stderr, "Could not attach to JVM!\n");
+				return;
+			}
 			CFIndex strLen = CFStringGetLength(privateDataRef->bsdPath);
 			UniChar uniStr[strLen];
 			CFRange strRange;
@@ -156,15 +215,23 @@ void DeviceNotification(void *refCon, io_service_t service, natural_t messageTyp
 			strRange.length = strLen;
 			CFStringGetCharacters(privateDataRef->bsdPath, strRange, uniStr);
 			jstring jDeviceName = (*env)->NewString(env, (jchar *)uniStr, (jsize)strLen);
-			//fprintf(stderr, "DeviceNotification attempts to call Java method!");
+//			fprintf(stderr, "DeviceRemoved attempts to call Java method!");
+			//fprintf(stderr, "DeviceRemoved env: %p, obj_USBEventHandler: %p, mid_deviceRemoved: %p!\n", env, &obj_USBEventHandler, &mid_deviceRemoved);
 			(*env)->CallVoidMethod(env, obj_USBEventHandler, mid_deviceRemoved, jDeviceName);
+			
+			if ((*env)->ExceptionOccurred(env)) {
+				(*env)->ExceptionDescribe(env);
+			}
+			(*cached_jvm)->DetachCurrentThread(cached_jvm);
+
 		} else {
-			fprintf(stderr, "DeviceNotification can not call deviceRemoved!");
+			fprintf(stderr, "DeviceRemoved can not call deviceRemoved!\n");
 		}
 		
-        // Free the data we're no longer using now that the device is going away
-        CFRelease(privateDataRef->bsdPath);
         
+		// Free the data we're no longer using now that the device is going away
+		CFRelease(privateDataRef->bsdPath);
+		
         if (privateDataRef->deviceInterface) {
             kr = (*privateDataRef->deviceInterface)->Release(privateDataRef->deviceInterface);
         }
@@ -173,6 +240,8 @@ void DeviceNotification(void *refCon, io_service_t service, natural_t messageTyp
         
         free(privateDataRef);
     }
+	
+	fprintf(stderr, "DeviceRemoved returns!\n");
 }
 
 
@@ -195,10 +264,14 @@ void DeviceAdded(void *refCon, io_iterator_t iterator)
     kern_return_t		kr;
     io_service_t		usbDevice;
     
+	
+	//fprintf(stderr, "DeviceAdded\n");
+	
+	
     while ((usbDevice = IOIteratorNext(iterator))) {
         MyPrivateData	*privateDataRef = NULL;
 		CFTypeRef		bsdPathAsCFString;
-		
+		jboolean		jvm_was_attached;
 
         privateDataRef = malloc(sizeof(MyPrivateData));
         bzero(privateDataRef, sizeof(MyPrivateData));
@@ -211,10 +284,17 @@ void DeviceAdded(void *refCon, io_iterator_t iterator)
                                                             kIORegistryIterateRecursively);	
 
 		privateDataRef->bsdPath = bsdPathAsCFString;
-
+		if (bsdPathAsCFString == NULL) {
+			fprintf(stderr, "DeviceAdded can not get bsdPathAsCFString!\n");
+		}
 		
 		if (bsdPathAsCFString != NULL && mid_deviceAdded != NULL && obj_USBEventHandler != NULL) {
-			JNIEnv *env = JNI_GetEnv();
+			CFShow(bsdPathAsCFString);
+			JNIEnv *env = JNI_GetEnv(&jvm_was_attached);
+			if (jvm_was_attached == JNI_FALSE) {
+				fprintf(stderr, "Could not attach to JVM!\n");
+				return;
+			}
 			CFIndex strLen = CFStringGetLength(bsdPathAsCFString);
 			UniChar uniStr[strLen];
 			CFRange strRange;
@@ -222,10 +302,16 @@ void DeviceAdded(void *refCon, io_iterator_t iterator)
 			strRange.length = strLen;
 			CFStringGetCharacters(bsdPathAsCFString, strRange, uniStr);
 			jstring jBSDPath = (*env)->NewString(env, (jchar *)uniStr, (jsize)strLen);
-			fprintf(stderr, "DeviceAdded attempts to call Java method!");
+			//fprintf(stderr, "DeviceAdded attempts to call Java method!\n");
 			(*env)->CallVoidMethod(env, obj_USBEventHandler, mid_deviceAdded, jBSDPath);
+			
+			if ((*env)->ExceptionOccurred(env)) {
+				(*env)->ExceptionDescribe(env);
+			}
+			(*cached_jvm)->DetachCurrentThread(cached_jvm);
+			
 		} else {
-			fprintf(stderr, "DeviceNotification can not call deviceAdded!");
+			fprintf(stderr, "DeviceAdded can not call deviceAdded!\n");
 		}
 		
 		
@@ -234,18 +320,20 @@ void DeviceAdded(void *refCon, io_iterator_t iterator)
         kr = IOServiceAddInterestNotification(gNotifyPort,						// notifyPort
 											  usbDevice,						// service
 											  kIOGeneralInterest,				// interestType
-											  DeviceNotification,				// callback
+											  DeviceRemoved,				// callback
 											  privateDataRef,					// refCon
 											  &(privateDataRef->notification)	// notification
 											  );
 		
         if (KERN_SUCCESS != kr) {
-            printf("IOServiceAddInterestNotification returned 0x%08x.\n", kr);
+            fprintf("IOServiceAddInterestNotification returned 0x%08x.\n", kr);
         }
         
         // Done with this USB device; release the reference added by IOIteratorNext
         kr = IOObjectRelease(usbDevice);
     }
+	
+	fprintf(stderr, "DeviceAdded returns!\n");
 }
 
 
@@ -288,14 +376,14 @@ JNIEXPORT jint JNICALL Java_com_sue_protocol_SerialPortObserverThread_initHandle
 	
 	obj_USBEventHandler = (*env)->NewWeakGlobalRef(env, obj);
 	if (obj_USBEventHandler == NULL) {
-		fprintf(stderr, "Can not create weak reference to USBEventHandler object!");
+		fprintf(stderr, "Can not create weak reference to USBEventHandler object!\n");
 		return JNI_ERR;
 	}
 	
 	if (mid_deviceRemoved == NULL) {
 		mid_deviceRemoved = (*env)->GetMethodID(env, cls, "deviceRemoved", "(Ljava/lang/String;)V");
 		if (mid_deviceRemoved == NULL) {
-			fprintf(stderr, "Callback method deviceRemoved not found! Callback will NEVER be called!");
+			fprintf(stderr, "Callback method deviceRemoved not found! Callback will NEVER be called!\n");
 			//return; /* method not found, exception already thrown */
 		}
 	}
@@ -303,7 +391,7 @@ JNIEXPORT jint JNICALL Java_com_sue_protocol_SerialPortObserverThread_initHandle
 	if (mid_deviceAdded == NULL) {
 		mid_deviceAdded = (*env)->GetMethodID(env, cls, "deviceAdded", "(Ljava/lang/String;)V");
 		if (mid_deviceAdded == NULL) {
-			fprintf(stderr, "Callback method deviceAdded not found! Callback will NEVER be called!");
+			fprintf(stderr, "Callback method deviceAdded not found! Callback will NEVER be called!\n");
 			//return; /* method not found, exception already thrown */
 		}
 	}
