@@ -13,7 +13,11 @@ extern "C" {
  * Signature: (JJ)I
  */
 JNIEXPORT jint JNICALL Java_com_sue_protocol_SerialPortObserverThread_initHandler
-  (JNIEnv *, jobject, jlong, jlong);
+	(JNIEnv *, jobject);
+
+	
+//JNIEXPORT jint JNICALL Java_com_sue_protocol_SerialPortObserverThread_initHandler
+//  (JNIEnv *, jobject, jlong, jlong);
 
 #ifdef __cplusplus
 }
