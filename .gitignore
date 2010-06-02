@@ -1,0 +1,30 @@
+# folders to be ignored
+.svn
+backup/*
+dist/*
+bin/*
+temp/*
+build/*
+Debug/*
+Release/*
+x64/*
+
+# a repository on its own
+USBEventHandler/*
+
+# unneeded files
+._launch4j
+._nsis
+build.log
+
+
+# do not handle libraries
+USBEventhandler.dll
+libUSBEventHandler.jnilib
+librxtxSerial.jnilib
+librxtxSerial.so
+rxtxSerial.dll
+
+# mac os noise
+.DS_Store
+profile
