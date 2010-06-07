@@ -464,6 +464,7 @@ JNIEXPORT jint JNICALL Java_com_sue_protocol_SerialPortObserverThread_initHandle
 		}
 	}
 
+
 #ifdef CALLTESTFUNCTION
 	if (mid_test == NULL) {
 		mid_test = env->GetMethodID(cls, "test", "()V");
@@ -475,8 +476,6 @@ JNIEXPORT jint JNICALL Java_com_sue_protocol_SerialPortObserverThread_initHandle
 		}
 	}
 #endif
-
-
 
 
 
@@ -501,7 +500,9 @@ JNIEXPORT jint JNICALL Java_com_sue_protocol_SerialPortObserverThread_initHandle
 
     if (!isRegistered && !::RegisterClassEx(&wndcls))
     {
-        return JNI_ERR;
+        // TODO handle exception
+//		MessageBox (NULL, TEXT ("RegisterClassEx failed"), TEXT("PowerCore"), MB_ICONERROR);
+        return -1;
     }
 
     isRegistered = true;
@@ -519,22 +520,33 @@ JNIEXPORT jint JNICALL Java_com_sue_protocol_SerialPortObserverThread_initHandle
 		hInstance,
 		NULL);
 
+    // store "this"-pointer as user data in the window handle
+//    ::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR) this);
 
-	if ( ! RegisterDeviceInterfaceToHwnd(WceusbshGUID, hwnd, &hDeviceNotify) )
-    {
-        fprintf(stderr, "RegisterDeviceInterfaceToHwnd");
-		return JNI_ERR;
-    }
+	// we want global system events
+	DEV_BROADCAST_DEVICEINTERFACE 	db;
 
-	
-	MessagePump(hwnd);
+	memset (&db, 0, sizeof(db));
+	db.dbcc_size = sizeof(db);
+	db.dbcc_devicetype = DBT_DEVTYP_DEVICEINTERFACE;
+	db.dbcc_classguid = PCGuids::kPCORE_GUID_CUBE;
 
-	if ( ! UnregisterDeviceNotification(hDeviceNotify) )
-    {
-       fprintf(stderr, "UnregisterDeviceNotification");
-    }
+	HDEVNOTIFY hdev = ::RegisterDeviceNotification (hwnd, &db, DEVICE_NOTIFY_WINDOW_HANDLE);
 
+//	bool idle=true;
+/*
+	MSG msg;
+	while(1){
+		::PeekMessage(&msg,0,0,0,PM_REMOVE));
+		::TranslateMessage(&msg);
+		::DispatchMessage(&msg);
+//		idle=false;
+	}
+//	if(idle)
+//		::Sleep(20);
+*/
 
-	return JNI_OK;
+//	s_PCoreChangeMessage = RegisterWindowMessage(szPCoreWinMessageName);
+
+	return 0;
 }
-

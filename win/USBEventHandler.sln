@@ -1,5 +1,4 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
+﻿Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "USBEventHandler", "USBEventHandler\USBEventHandler.vcproj", "{3E7B424F-9D8C-4FE5-8401-23125C42323F}"
 EndProject

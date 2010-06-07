@@ -357,14 +357,20 @@ void SignalHandler(int sigraised)
 //================================================================================================
 //	main
 //================================================================================================
-JNIEXPORT jint JNICALL Java_com_sue_protocol_SerialPortObserverThread_initHandler(JNIEnv *env, jobject obj, jlong usbVendor, jlong usbProduct) {
-	
+//JNIEXPORT jint JNICALL Java_com_sue_protocol_SerialPortObserverThread_initHandler(JNIEnv *env, jobject obj, jlong usbVendor, jlong usbProduct) {
+JNIEXPORT jint JNICALL Java_com_sue_protocol_SerialPortObserverThread_initHandler(JNIEnv *env, jobject obj) {
+
+
 	CFMutableDictionaryRef 	matchingDict;
     CFRunLoopSourceRef		runLoopSource;
     CFNumberRef				numberRef;
     kern_return_t			kr;
     sig_t					oldHandler;
+
 	
+	//initHandler(0x1F2E, 0x000A); // Cube new Hardware
+	long usbVendor = 0x1F2E;
+	long usbProduct = 0x000A;
 	
 	
 	
