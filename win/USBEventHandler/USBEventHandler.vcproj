@@ -21,7 +21,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Z:\Documents\eclipseworkspace\CubeConfigTool\"
+			OutputDirectory="C:\eclipseworkspace\CubeConfigTool\"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="1"

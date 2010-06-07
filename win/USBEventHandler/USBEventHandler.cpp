@@ -248,9 +248,47 @@ LRESULT OnMyDeviceChange(WPARAM wParam, LPARAM lParam)
 
 
 
+// get COM port
+// notify JNI
+void NotifyJNI(CString deviceDescription, bool isDeviceConnected) {
+	int left = deviceDescription.ReverseFind(_T('('))+1;
+	int right = deviceDescription.ReverseFind(_T(')'));
+	deviceDescription = deviceDescription.Mid(left, right-left);
+	deviceDescription = deviceDescription.MakeUpper();
+
+	//fprintf(stderr, "serial port: %s", deviceDescription);
+	jboolean jvm_was_attached;
+	JNIEnv *env = JNI_GetEnv(&jvm_was_attached);
+	if (jvm_was_attached == JNI_FALSE) {
+		fprintf(stderr, "Could not attach to JVM!\n");
+		return;
+	}
+	jstring jSerialPort = env->NewString((jchar *)deviceDescription.GetBuffer(), (jsize)deviceDescription.GetLength());
+
+
+	if ( isDeviceConnected == true ) {
+		if (mid_deviceAdded != NULL && obj_USBEventHandler != NULL) {
+			env->CallVoidMethod(obj_USBEventHandler, mid_deviceAdded, jSerialPort);
+		} else {
+			fprintf(stderr, "DeviceAdded can not call deviceAdded!\n");
+		}
+	} else {
+		if (mid_deviceRemoved != NULL && obj_USBEventHandler != NULL) {
+			env->CallVoidMethod(obj_USBEventHandler, mid_deviceRemoved, jSerialPort);
+		} else {
+			fprintf(stderr, "DeviceRemoved can not call deviceRemoved!\n");
+		}
+	}
+
+	if (env->ExceptionOccurred()) {
+		env->ExceptionDescribe();
+	}
+	cached_jvm->DetachCurrentThread();
+}
+
+
 void FindConnectedDevices() {
-	CString szDevId = _T('USB\\VID_1F2E&PID_000A');
-	CString szClass = _T('USB');
+	CString szClass = _T("USB");
 
 	HDEVINFO hDevInfo = SetupDiGetClassDevs(NULL, szClass, NULL, DIGCF_ALLCLASSES | DIGCF_PRESENT);
 	if( INVALID_HANDLE_VALUE == hDevInfo ) {
@@ -258,10 +296,60 @@ void FindConnectedDevices() {
 	}
 
 	SP_DEVINFO_DATA spDevInfoData;
-	if ( FindDevice(hDevInfo, szDevId, spDevInfoData) ) {
+	spDevInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
+	for(int i=0; SetupDiEnumDeviceInfo(hDevInfo, i, &spDevInfoData); i++) {
+		DWORD nSize=0 ;
+		TCHAR buf[MAX_PATH];
+
+		DWORD DataT;
+		LPTSTR buffer = NULL;
+		DWORD buffersize = 0;
+
+		
+		if ( !SetupDiGetDeviceInstanceId(hDevInfo, &spDevInfoData, buf, sizeof(buf), &nSize) ) {
+			fprintf(stderr, "SetupDiGetDeviceInstanceId() error");
+			continue;
+		}
+
+		CString devicename(buf);
+		if(devicename.Find(_T("USB\\VID_1F2E&PID_000A")) == -1) {
+			continue;
+		}
+
+		// found Cube, lookup registry properties
+		while (!SetupDiGetDeviceRegistryProperty(
+               hDevInfo,
+               &spDevInfoData,
+               SPDRP_FRIENDLYNAME, // SPDRP_DEVICEDESC
+               &DataT,
+               (PBYTE)buffer,
+               buffersize,
+               &buffersize))
+		{
+ 
+			if (GetLastError() == ERROR_INSUFFICIENT_BUFFER)
+			{
+				// Change the buffer size.
+				if (buffer) LocalFree(buffer);
+				// Double the size to avoid problems on 
+                // W2k MBCS systems per KB 888609. 
+                buffer = (LPTSTR)LocalAlloc(LPTR,buffersize * 2);
+			}
+            else
+            {
+                // Insert error handling here.
+                break;
+            }
+		}
+           
+		// finally tell JNI about the device
+		NotifyJNI(CString(buffer), true);
+		if (buffer) LocalFree(buffer);
 
 	}
 
+	// cleanup
+	SetupDiDestroyDeviceInfoList(hDevInfo);
 }
 
 
@@ -282,7 +370,7 @@ void UpdateDevice(PDEV_BROADCAST_DEVICEINTERFACE pDevInf, WPARAM wParam)
 	szDevId.MakeUpper();
 
 	// USB\VID_1F2E&PID_000A
-	idx = szDevId.Find(_T('USB\\VID_1F2E&PID_000A'));
+	idx = szDevId.Find(_T("USB\\VID_1F2E&PID_000A"));
 	if(idx == -1) {
 		fprintf(stderr, "not a cube!!");
 		return;
@@ -306,9 +394,6 @@ void UpdateDevice(PDEV_BROADCAST_DEVICEINTERFACE pDevInf, WPARAM wParam)
 		return;
 	}
 
-
-
-
 	SP_DEVINFO_DATA spDevInfoData;
 	if ( FindDevice(hDevInfo, szDevId, spDevInfoData) ) {
 		// OK, device found
@@ -325,51 +410,9 @@ void UpdateDevice(PDEV_BROADCAST_DEVICEINTERFACE pDevInf, WPARAM wParam)
 			lstrcpy(buf, _T("Unknown"));
 		}
 
-		// get COM port
-		CString szTemp = buf;
-		int left = szTemp.ReverseFind(_T('('))+1;
-		int right = szTemp.ReverseFind(_T(')'));
-		szTemp = szTemp.Mid(left, right-left);
-		szTemp = szTemp.MakeUpper();
-
-		//fprintf(stderr, "serial port: %s", szTemp);
-		jboolean jvm_was_attached;
-		JNIEnv *env = JNI_GetEnv(&jvm_was_attached);
-		if (jvm_was_attached == JNI_FALSE) {
-			fprintf(stderr, "Could not attach to JVM!\n");
-			return;
-		}
-		jstring jSerialPort = env->NewString((jchar *)szTemp.GetBuffer(), (jsize)szTemp.GetLength());
-
-
-		if ( DBT_DEVICEARRIVAL == wParam ) {
-
-			// device added
-			if (mid_deviceAdded != NULL && obj_USBEventHandler != NULL) {
-				env->CallVoidMethod(obj_USBEventHandler, mid_deviceAdded, jSerialPort);
-			} else {
-				fprintf(stderr, "DeviceAdded can not call deviceAdded!\n");
-			}
-
-
-		} else {
-
-			// device remove
-			if (mid_deviceRemoved != NULL && obj_USBEventHandler != NULL) {
-				env->CallVoidMethod(obj_USBEventHandler, mid_deviceRemoved, jSerialPort);
-			} else {
-				fprintf(stderr, "DeviceRemoved can not call deviceRemoved!\n");
-			}
-
-
-		}
-
-				
-		if (env->ExceptionOccurred()) {
-			env->ExceptionDescribe();
-		}
-		cached_jvm->DetachCurrentThread();
-
+		// finally tell JNI about the device
+		NotifyJNI(CString(buf), DBT_DEVICEARRIVAL == wParam);
+		
 	}
 
 	SetupDiDestroyDeviceInfoList(hDevInfo);
@@ -401,7 +444,6 @@ BOOL FindDevice(HDEVINFO& hDevInfo, CString& szDevId, SP_DEVINFO_DATA& spDevInfo
 
 
 
-
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {   
 	LRESULT ret = 0;
@@ -422,131 +464,105 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 
-
 //================================================================================================
-//	main
+// main
 //================================================================================================
 JNIEXPORT jint JNICALL Java_com_sue_protocol_SerialPortObserverThread_initHandler(JNIEnv *env, jobject obj) {
-
 	static HDEVNOTIFY hDeviceNotify;
-	static const TCHAR szClassName[]  = L"ChangeNotifierPoCoAPI";
+	static const TCHAR szClassName[] = L"ChangeNotifierPoCoAPI";
 	static const DWORD dwWindowStyles = (WS_CHILDWINDOW | WS_CLIPSIBLINGS);
-
-
 	//printf("Java_com_sue_protocol_SerialPortObserverThread_initHandler");
-
-
 	// init JNI
+
 	jclass cls = env->GetObjectClass(obj);
 	if (cls == NULL) {
 		return JNI_ERR;
 	}
-
 	obj_USBEventHandler = env->NewWeakGlobalRef(obj);
 	if (obj_USBEventHandler == NULL) {
 		fprintf(stderr, "Can not create weak reference to USBEventHandler object!\n");
 		return JNI_ERR;
 	}
-
+	
 	if (mid_deviceRemoved == NULL) {
 		mid_deviceRemoved = env->GetMethodID(cls, "deviceRemoved", "(Ljava/lang/String;)V");
 		if (mid_deviceRemoved == NULL) {
 			fprintf(stderr, "Callback method deviceRemoved not found! Callback will NEVER be called!\n");
-			//return; /* method not found, exception already thrown */
+		//return; /* method not found, exception already thrown */
 		}
 	}
-
+	
 	if (mid_deviceAdded == NULL) {
 		mid_deviceAdded = env->GetMethodID(cls, "deviceAdded", "(Ljava/lang/String;)V");
 		if (mid_deviceAdded == NULL) {
-			fprintf(stderr, "Callback method deviceAdded not found! Callback will NEVER be called!\n");
-			//return; /* method not found, exception already thrown */
+		fprintf(stderr, "Callback method deviceAdded not found! Callback will NEVER be called!\n");
+		//return; /* method not found, exception already thrown */
 		}
 	}
 
-
-#ifdef CALLTESTFUNCTION
+	#ifdef CALLTESTFUNCTION
 	if (mid_test == NULL) {
 		mid_test = env->GetMethodID(cls, "test", "()V");
 		if (mid_test == NULL) {
 			fprintf(stderr, "Callback method test not found! Callback will NEVER be called!");
-			//return; /* method not found, exception already thrown */
+		//return; /* method not found, exception already thrown */
 		} else {
 			env->CallVoidMethod(obj_USBEventHandler, mid_test);
 		}
 	}
-#endif
-
-
-
-    HINSTANCE hInstance = ::GetModuleHandle(NULL);
-
-    WNDCLASSEX wndcls;
-    wndcls.cbSize			= sizeof(WNDCLASSEX); 
-	wndcls.style			= CS_HREDRAW | CS_VREDRAW;
-	wndcls.lpfnWndProc		= WndProc;
-	wndcls.cbClsExtra		= NULL;
-	wndcls.cbWndExtra		= NULL;
-	wndcls.hInstance		= hInstance;
-	wndcls.hIcon			= NULL;
-	wndcls.hCursor			= NULL;
-	wndcls.hbrBackground	= NULL;
-	wndcls.lpszMenuName		= NULL;
-	wndcls.lpszClassName	= szClassName;
-	wndcls.hIconSm			= NULL;
-
-    // register class only once
-    static bool isRegistered = false;
-
-    if (!isRegistered && !::RegisterClassEx(&wndcls))
-    {
-        // TODO handle exception
-//		MessageBox (NULL, TEXT ("RegisterClassEx failed"), TEXT("PowerCore"), MB_ICONERROR);
-        return -1;
-    }
-
-    isRegistered = true;
-
-    HWND hwnd=::CreateWindowEx(0,
-		szClassName, 
-		TEXT ("message-only window"),
-		dwWindowStyles,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		HWND_MESSAGE, // message-only window
-		NULL,
-		hInstance,
-		NULL);
-
-    // store "this"-pointer as user data in the window handle
-//    ::SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR) this);
-
-	// we want global system events
-	DEV_BROADCAST_DEVICEINTERFACE 	db;
-
-	memset (&db, 0, sizeof(db));
-	db.dbcc_size = sizeof(db);
-	db.dbcc_devicetype = DBT_DEVTYP_DEVICEINTERFACE;
-	db.dbcc_classguid = PCGuids::kPCORE_GUID_CUBE;
-
-	HDEVNOTIFY hdev = ::RegisterDeviceNotification (hwnd, &db, DEVICE_NOTIFY_WINDOW_HANDLE);
-
-//	bool idle=true;
-/*
-	MSG msg;
-	while(1){
-		::PeekMessage(&msg,0,0,0,PM_REMOVE));
-		::TranslateMessage(&msg);
-		::DispatchMessage(&msg);
-//		idle=false;
+	#endif
+	
+	HINSTANCE hInstance = ::GetModuleHandle(NULL);
+	WNDCLASSEX wndcls;
+	wndcls.cbSize = sizeof(WNDCLASSEX); 
+	wndcls.style = CS_HREDRAW | CS_VREDRAW;
+	wndcls.lpfnWndProc = WndProc;
+	wndcls.cbClsExtra = NULL;
+	wndcls.cbWndExtra = NULL;
+	wndcls.hInstance = hInstance;
+	wndcls.hIcon = NULL;
+	wndcls.hCursor = NULL;
+	wndcls.hbrBackground = NULL;
+	wndcls.lpszMenuName = NULL;
+	wndcls.lpszClassName = szClassName;
+	wndcls.hIconSm = NULL;
+	
+	// register class only once
+	static bool isRegistered = false;
+	if (!isRegistered && !::RegisterClassEx(&wndcls))
+	{
+		return JNI_ERR;
 	}
-//	if(idle)
-//		::Sleep(20);
-*/
+	isRegistered = true;
+	HWND hwnd=::CreateWindowEx(0,
+			szClassName, 
+			TEXT ("message-only window"),
+			dwWindowStyles,
+			CW_USEDEFAULT,
+			CW_USEDEFAULT,
+			CW_USEDEFAULT,
+			CW_USEDEFAULT,
+			HWND_MESSAGE, // message-only window
+			NULL,
+			hInstance,
+			NULL);
+	
+	if ( ! RegisterDeviceInterfaceToHwnd(WceusbshGUID, hwnd, &hDeviceNotify) )
+	{
+		fprintf(stderr, "RegisterDeviceInterfaceToHwnd");
+		return JNI_ERR;
+	}
+	
 
-//	s_PCoreChangeMessage = RegisterWindowMessage(szPCoreWinMessageName);
+	// check for currently connected devices
+	FindConnectedDevices();
 
-	return 0;
+
+	MessagePump(hwnd);
+	if ( ! UnregisterDeviceNotification(hDeviceNotify) )
+	{
+		fprintf(stderr, "UnregisterDeviceNotification");
+	}
+
+	return JNI_OK;
 }

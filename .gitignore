@@ -9,6 +9,10 @@ Debug/*
 Release/*
 x64/*
 
+# Visual Studio
+Debug/*
+USBEventhandler.ncb
+
 # a repository on its own
 USBEventHandler/*
 
